@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+    <head>
+        <title>HyperbolicKaleidoScope</title>
+        <meta charset="UTF-8" />
+        <link rel="shortcut icon" href="data:," />
+        <style>
+            html {
+                height: 100%;
+                width: 100%;
+            }
+            html::-webkit-scrollbar {
+                display: none;
+            }
+            body {
+                margin: 0;
+                height: 100%;
+            }
+            /* #canvas-container {
+            width: 100%;
+            height: 100%;
+            } */
+            #canvas {
+                width: 512px;
+                height: 512px;
+            }
+            #container {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+        </style>
+        <script type="text/javascript" src="./bundle.js"></script>
+        <script id="vertexShader" type="x-shader/x-vertex">
+
+	 precision mediump float;
+	 precision mediump int;
+
+	 uniform mat4 modelViewMatrix; // optional
+	 uniform mat4 projectionMatrix; // optional
+
+	 attribute vec3 position;
+	 attribute vec4 color;
+
+	 varying vec3 vPosition;
+	 varying vec4 vColor;
+
+	 void main()	{
+
+	     vPosition = position;
+	     vColor = color;
+
+	     gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+
+	 }
+
+	</script>
+
+	<script id="fragmentShader" type="x-shader/x-fragment">
+
+	 precision mediump float;
+	 precision mediump int;
+
+	 uniform float time;
+
+	 varying vec3 vPosition;
+	 varying vec4 vColor;
+
+	 void main()	{
+
+	     vec4 color = vec4( vColor );
+	     color.r += sin( vPosition.x * 10.0 + time ) * 0.5;
+
+	     gl_FragColor = color;
+
+	 }
+
+	</script>
+    </head>
+    <body>
+        <div id="canvas-container" width="1024px" height="1024px"></div>
+        <!-- <div id="container">
+             <div id="canvasContainer"></div>
+             </div> -->
+    </body>
+</html>
